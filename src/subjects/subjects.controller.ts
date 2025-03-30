@@ -5,6 +5,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   UseGuards,
@@ -30,29 +31,27 @@ export class SubjectsController {
   }
 
   @Get(':identifier')
-  async findOne(@Param('identifier') identifier: string) {
-    const id = parseInt(identifier, 10);
-    return isNaN(id)
-      ? this.subjectsService.findOne(identifier)
-      : this.subjectsService.findOne(id);
+  async findOne(@Param('identifier', ParseIntPipe) identifier: string) {
+    return this.subjectsService.findOne(
+      isNaN(+identifier) ? identifier : +identifier,
+    );
   }
 
   @Patch(':identifier')
   async update(
-    @Param('identifier') identifier: string,
+    @Param('identifier', ParseIntPipe) identifier: string,
     @Body() updateSubjectDto: UpdateSubjectDto,
   ) {
-    const id = parseInt(identifier, 10);
-    return isNaN(id)
-      ? this.subjectsService.update(identifier, updateSubjectDto)
-      : this.subjectsService.update(id, updateSubjectDto);
+    return this.subjectsService.update(
+      isNaN(+identifier) ? identifier : +identifier,
+      updateSubjectDto,
+    );
   }
 
   @Delete(':identifier')
   async remove(@Param('identifier') identifier: string) {
-    const id = parseInt(identifier, 10);
-    return isNaN(id)
-      ? this.subjectsService.remove(identifier)
-      : this.subjectsService.remove(id);
+    return this.subjectsService.remove(
+      isNaN(+identifier) ? identifier : +identifier,
+    );
   }
 }

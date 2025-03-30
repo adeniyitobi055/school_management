@@ -10,6 +10,9 @@ import { SubjectsModule } from './subjects/subjects.module';
 import { User } from './users/entities/user.entity';
 import { Subject } from './subjects/entities/subject.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { InstitutionLocationsModule } from './institution-locations/institution-locations.module';
+import { InstitutionsModule } from './institutions/institutions.module';
+import { ClassModule } from './class/class.module';
 import * as Joi from 'joi';
 
 @Module({
@@ -27,6 +30,9 @@ import * as Joi from 'joi';
     UsersModule,
     AttendanceModule,
     SubjectsModule,
+    InstitutionLocationsModule,
+    InstitutionsModule,
+    ClassModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { Institution } from 'src/institutions/entities/institution.entity';
 import { Subject } from 'src/subjects/entities/subject.entity';
 import {
   Column,
@@ -6,6 +7,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -51,6 +53,11 @@ export class User {
 
   @Column({ default: false })
   isTeaching: boolean;
+
+  @ManyToOne(() => Institution, (institution) => institution.users, {
+    onDelete: 'CASCADE',
+  })
+  institution: Institution;
 
   @CreateDateColumn()
   createdAt: Date;
