@@ -12,8 +12,11 @@ import { Subject } from './subjects/entities/subject.entity';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { InstitutionLocationsModule } from './institution-locations/institution-locations.module';
 import { InstitutionsModule } from './institutions/institutions.module';
-import { ClassModule } from './class/class.module';
+import { ClassModule } from './classes/classes.module';
 import * as Joi from 'joi';
+import { Classes } from './classes/entities/classes.entity';
+import { Institution } from './institutions/entities/institution.entity';
+import { InstitutionLocation } from './institution-locations/entities/institution-location.entity';
 
 @Module({
   imports: [
@@ -28,11 +31,11 @@ import * as Joi from 'joi';
     }),
     AuthModule,
     UsersModule,
-    AttendanceModule,
-    SubjectsModule,
-    InstitutionLocationsModule,
     InstitutionsModule,
+    InstitutionLocationsModule,
+    SubjectsModule,
     ClassModule,
+    AttendanceModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -46,8 +49,8 @@ import * as Joi from 'joi';
         database: 'school_management',
         autoLoadEntities: true,
         synchronize: false, // Set to false in production
-        entities: [User, Subject],
-        migrations: ['dist/migrations/*.ts'],
+        entities: [User, Subject, Classes, Institution, InstitutionLocation],
+        migrations: ['dist/migrations/*.js'],
         migrationsRun: false,
       }),
     }),

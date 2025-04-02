@@ -14,6 +14,7 @@ import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -25,12 +26,14 @@ export class UsersController {
   }
 
   @Get()
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async findAllUsers() {
     return this.usersService.findAllUsers();
   }
 
   @Get(':identifier')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async findOne(@Param('identifier', ParseIntPipe) identifier: string) {
     return this.usersService.findOne(
@@ -39,6 +42,7 @@ export class UsersController {
   }
 
   @Patch(':identifier')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async updateUser(
     @Param('identifier', ParseIntPipe) identifier: string,
@@ -51,6 +55,7 @@ export class UsersController {
   }
 
   @Delete(':identifier')
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   async deleteUser(@Param('identifier', ParseIntPipe) identifier: string) {
     return this.usersService.deleteUser(

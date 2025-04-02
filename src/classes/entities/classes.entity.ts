@@ -2,8 +2,8 @@
 import { Institution } from 'src/institutions/entities/institution.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('class')
-export class Class {
+@Entity('classes')
+export class Classes {
   @PrimaryGeneratedColumn()
   id: number;
 

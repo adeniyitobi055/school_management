@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Class } from 'src/class/entities/class.entity';
+import { Classes } from 'src/classes/entities/classes.entity';
 import { InstitutionLocation } from 'src/institution-locations/entities/institution-location.entity';
 import { User } from 'src/users/entities/user.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('institutions')
+@Entity()
 export class Institution {
   @PrimaryGeneratedColumn()
   id: number;
@@ -24,12 +24,17 @@ export class Institution {
   @Column()
   headOfInstitution: string;
 
-  @OneToMany(() => InstitutionLocation, (location) => location.institution)
+  @Column({ unique: true })
+  website: string;
+
+  @OneToMany(() => InstitutionLocation, (location) => location.institution, {
+    eager: true,
+  })
   locations: InstitutionLocation[];
 
   @OneToMany(() => User, (user) => user.institution)
   users: User[];
 
-  @OneToMany(() => Class, (cls) => cls.institution)
-  classes: Class[];
+  @OneToMany(() => Classes, (cls) => cls.institution)
+  classes: Classes[];
 }

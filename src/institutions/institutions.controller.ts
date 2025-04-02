@@ -14,7 +14,9 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { InstitutionsService } from './institutions.service';
 import { CreateInstitutionDto } from './dto/create-institution.dto';
 import { UpdateInstitutionDto } from './dto/update-institution.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('institutions')
 @UseGuards(JwtAuthGuard)
 export class InstitutionsController {

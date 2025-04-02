@@ -14,8 +14,10 @@ import { InstitutionLocationsService } from './institution-locations.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateInstitutionLocationDto } from './dto/create-institution-location.dto';
 import { UpdateInstitutionLocationDto } from './dto/update-institution-location.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('institution-locations')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class InstitutionLocationsController {
   constructor(private readonly locationsService: InstitutionLocationsService) {}
@@ -39,7 +41,7 @@ export class InstitutionLocationsController {
 
   @Patch(':identifier')
   update(
-    @Param('identifer', ParseIntPipe) identifier: string,
+    @Param('identifier', ParseIntPipe) identifier: string,
     @Body() updateLocationDto: UpdateInstitutionLocationDto,
   ) {
     return this.locationsService.update(

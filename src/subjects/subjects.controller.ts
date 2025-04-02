@@ -14,8 +14,10 @@ import { SubjectsService } from './subjects.service';
 import { CreateSubjectDto } from './dto/create-subject.dto';
 import { UpdateSubjectDto } from './dto/update-subject.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('subjects')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class SubjectsController {
   constructor(private readonly subjectsService: SubjectsService) {}

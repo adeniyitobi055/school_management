@@ -5,16 +5,31 @@ import { InstitutionLocation } from './entities/institution-location.entity';
 import { Repository } from 'typeorm';
 import { CreateInstitutionLocationDto } from './dto/create-institution-location.dto';
 import { UpdateInstitutionLocationDto } from './dto/update-institution-location.dto';
+import { Institution } from 'src/institutions/entities/institution.entity';
 
 @Injectable()
 export class InstitutionLocationsService {
   constructor(
     @InjectRepository(InstitutionLocation)
     private readonly locationRepository: Repository<InstitutionLocation>,
+
+    @InjectRepository(Institution)
+    private readonly institutionRespository: Repository<Institution>,
   ) {}
 
   async create(createLocationDto: CreateInstitutionLocationDto) {
-    const location = this.locationRepository.create(createLocationDto);
+    const institution = await this.institutionRespository.findOne({
+      where: { id: createLocationDto.institutionId },
+    });
+
+    if (!institution) {
+      throw new NotFoundException('Institution not found');
+    }
+
+    const location = this.locationRepository.create({
+      ...createLocationDto,
+      institution,
+    });
     return await this.locationRepository.save(location);
   }
 

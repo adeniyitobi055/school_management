@@ -1,20 +1,35 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Class } from './entities/class.entity';
+import { Classes } from './entities/classes.entity';
 import { Repository } from 'typeorm';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
+import { Institution } from 'src/institutions/entities/institution.entity';
 
 @Injectable()
 export class ClassesService {
   constructor(
-    @InjectRepository(Class)
-    private readonly classRepository: Repository<Class>,
+    @InjectRepository(Classes)
+    private readonly classRepository: Repository<Classes>,
+
+    @InjectRepository(Institution)
+    private readonly institutionRepository: Repository<Institution>,
   ) {}
 
   async create(createClassDto: CreateClassDto) {
-    const newClass = this.classRepository.create(createClassDto);
+    const institution = await this.institutionRepository.findOne({
+      where: { id: createClassDto.institutionId },
+    });
+
+    if (!institution) {
+      throw new NotFoundException('Institution not found');
+    }
+
+    const newClass = this.classRepository.create({
+      ...createClassDto,
+      institution,
+    });
     return await this.classRepository.save(newClass);
   }
 
@@ -23,7 +38,7 @@ export class ClassesService {
   }
 
   async findOne(identifier: string | number) {
-    let existingClass: Class | null = null;
+    let existingClass: Classes | null = null;
     if (typeof identifier === 'string') {
       existingClass = await this.classRepository.findOne({
         where: { name: identifier },
@@ -53,6 +68,6 @@ export class ClassesService {
 
   async delete(identifer: string | number) {
     const cls = await this.findOne(identifer);
-    await this.classRepository.delete(cls);
+    await this.classRepository.delete(cls.id);
   }
 }

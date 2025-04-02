@@ -10,12 +10,14 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { ClassesService } from './class.service';
+import { ClassesService } from './classes.service';
 import { CreateClassDto } from './dto/create-class.dto';
 import { UpdateClassDto } from './dto/update-class.dto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
-@Controller('class')
+@Controller('classes')
+@ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}

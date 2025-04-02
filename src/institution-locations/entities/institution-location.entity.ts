@@ -26,4 +26,10 @@ export class InstitutionLocation {
     onDelete: 'CASCADE',
   })
   institution: Institution;
+
+  @Column({ type: 'decimal', precision: 10 })
+  latitude: number;
+
+  @Column({ type: 'decimal', precision: 10 })
+  longitude: number;
 }
